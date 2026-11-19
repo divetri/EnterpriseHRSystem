@@ -1,15 +1,25 @@
+using EnterpriseHR.Api.Middleware;
+using EnterpriseHR.DataAccess;
+using EnterpriseHR.DataAccess.Repositories;
+using EnterpriseHR.Domain.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Registrasi DataAccess & Repositories
+builder.Services.AddSingleton<SqlConnectionFactory>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+//builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IMasterDataRepository, MasterDataRepository>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Global Exception Handling Middleware
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -17,9 +27,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

@@ -10,4 +10,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EnterpriseHR.DataAccess\EnterpriseHR.DataAccess.csproj" />
+    <ProjectReference Include="..\EnterpriseHR.Domain\EnterpriseHR.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
