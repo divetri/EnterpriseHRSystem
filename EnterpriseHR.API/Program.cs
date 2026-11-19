@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 // Registrasi DataAccess & Repositories
 builder.Services.AddSingleton<SqlConnectionFactory>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-//builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IMasterDataRepository, MasterDataRepository>();
 
 var app = builder.Build();
