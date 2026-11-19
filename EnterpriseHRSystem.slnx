@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="EnterpriseHR.API/EnterpriseHR.API.csproj" />
+  <Project Path="EnterpriseHR.DataAccess/EnterpriseHR.DataAccess.csproj" />
+  <Project Path="EnterpriseHR.Domain/EnterpriseHR.Domain.csproj" />
+  <Project Path="EnterpriseHR.WebApp/EnterpriseHR.WebApp.csproj" />
+</Solution>
