@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EnterpriseHR.Domain.DTO
+namespace EnterpriseHR.Domain.DTOs;
+
+public class UpdateSalaryRequestDTO
 {
-    internal class UpdateSalaryRequestDto
-    {
-    }
+    public decimal NewSalary { get; set; }
+    public int? NewPositionId { get; set; }
+    public string Reason { get; set; } = string.Empty;
 }

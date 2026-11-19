@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EnterpriseHR.Domain.DTOs;
 
-public class EmployeeDto
+public class EmployeeDTO
 {
     public int Id { get; set; }
     public string EmployeeNumber { get; set; } = string.Empty;
