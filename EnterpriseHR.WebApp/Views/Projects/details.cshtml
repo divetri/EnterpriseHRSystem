@@ -1,0 +1,88 @@
+﻿@model EnterpriseHR.Domain.DTOs.ProjectDetailDTO
+@{
+    ViewData["Title"] = $"Project - {Model.ProjectName}";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2>@Model.ProjectName <small class="text-muted">(@Model.ProjectCode)</small></h2>
+        <p class="mb-0">
+            <strong>Department:</strong> @Model.DepartmentName |
+            <strong>Status:</strong> <span class="badge bg-info text-dark">@Model.Status</span> |
+            <strong>Start:</strong> @Model.StartDate.ToString("yyyy-MM-dd")
+            @if (Model.EndDate.HasValue)
+            {
+                <span>| <strong>End:</strong> @Model.EndDate.Value.ToString("yyyy-MM-dd")</span>
+            }
+        </p>
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">Back to Projects</a>
+</div>
+
+@if (TempData["SuccessMessage"] is string okMsg)
+{
+    <div class="alert alert-success">@okMsg</div>
+}
+@if (TempData["ErrorMessage"] is string errMsg)
+{
+    <div class="alert alert-danger">@errMsg</div>
+}
+<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <h4>Assigned Team Members</h4>
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Emp #</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th class="text-end">Allocation (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Members.Any())
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">No team members assigned yet.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var m in Model.Members)
+                    {
+                        <tr>
+                            <td>@m.EmployeeNumber</td>
+                            <td>@m.FullName</td>
+                            <td>@m.RoleInProject</td>
+                            <td class="text-end">@m.AllocationPercentage%</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-lg-5">
+        <h4>Assign Team Member</h4>
+        <form asp-action="Assign" asp-route-id="@Model.Id" method="post" class="card card-body">
+            @Html.AntiForgeryToken()
+            <div class="mb-3">
+                <label class="form-label">Active Employee</label>
+                <select name="EmployeeId" asp-items="ViewBag.ActiveEmployees" class="form-select">
+                    <option value="">-- Select Employee --</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Role in Project</label>
+                <input type="text" name="RoleInProject" class="form-control" placeholder="e.g. Backend Engineer" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Allocation Percentage (1 - 100)</label>
+                <input type="number" name="AllocationPercentage" min="1" max="100" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-success">Assign to Project</button>
+        </form>
+    </div>
+</div>

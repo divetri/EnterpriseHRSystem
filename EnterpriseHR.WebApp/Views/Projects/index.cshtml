@@ -1,0 +1,38 @@
+﻿@model IEnumerable<EnterpriseHR.Domain.DTOs.ProjectSummaryDTO>
+@{
+    ViewData["Title"] = "Projects";
+}
+
+<h2>Projects</h2>
+
+<div class="table-responsive mt-3">
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Code</th>
+                <th>Project Name</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Start Date</th>
+                <th class="text-center">Active Team Members</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prj in Model)
+            {
+                <tr>
+                    <td>@prj.ProjectCode</td>
+                    <td>@prj.ProjectName</td>
+                    <td>@prj.DepartmentName</td>
+                    <td><span class="badge bg-info text-dark">@prj.Status</span></td>
+                    <td>@prj.StartDate.ToString("yyyy-MM-dd")</td>
+                    <td class="text-center">@prj.ActiveMemberCount</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@prj.Id" class="btn btn-sm btn-primary">Details & Team</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

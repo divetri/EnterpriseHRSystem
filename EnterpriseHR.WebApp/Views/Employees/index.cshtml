@@ -1,0 +1,83 @@
+﻿@model IEnumerable<EnterpriseHR.Domain.DTOs.EmployeeDTO>
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Employees</h2>
+    <a asp-action="Create" class="btn btn-primary">+ Add Employee</a>
+</div>
+
+@if (TempData["SuccessMessage"] is string okMsg)
+{
+    <div class="alert alert-success">@okMsg</div>
+}
+@if (TempData["ErrorMessage"] is string errMsg)
+{
+    <div class="alert alert-danger">@errMsg</div>
+}
+
+<form method="get" asp-action="Index" class="row g-2 mb-3">
+    <div class="col-md-5">
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Search by name or employee number..." />
+    </div>
+    <div class="col-md-4">
+        <select name="departmentId" asp-items="ViewBag.Departments" class="form-select">
+            <option value="">-- All Departments --</option>
+        </select>
+    </div>
+    <div class="col-md-3 d-flex gap-2">
+        <button type="submit" class="btn btn-secondary">Filter</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Emp #</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Position</th>
+                <th>Manager</th>
+                <th class="text-end">Salary</th>
+                <th>Status</th>
+                <th style="width: 170px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in Model)
+            {
+                <tr>
+                    <td>@emp.EmployeeNumber</td>
+                    <td>@emp.FullName</td>
+                    <td>@emp.DepartmentName</td>
+                    <td>@emp.PositionTitle</td>
+                    <td>@(emp.ManagerName ?? "-")</td>
+                    <td class="text-end">@emp.Salary.ToString("N2")</td>
+                    <td>
+                        @if (emp.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Inactive</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@emp.Id" class="btn btn-sm btn-warning">Edit</a>
+                        @if (emp.IsActive)
+                        {
+                            <form asp-action="Delete" asp-route-id="@emp.Id" method="post" class="d-inline" onsubmit="return confirm('Deactivate this employee?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-danger">Deactivate</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
